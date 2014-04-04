@@ -1,4 +1,4 @@
-define(function(){
+define(['./api.utils.js'],function(utils){
   function createPolyline(cesiumWidget, options){
     
     var Cartographic = Cesium.Cartographic;
@@ -17,15 +17,23 @@ define(function(){
 
     var poses = [];
     for(var i = 0; i < options.positions.length; i ++){
+
+      if(typeof options.positions[i].latitude == 'string'){
+      options.positions[i].longitude = utils.ConvertDMStoDD(options.positions[i].longitude);
+      options.positions[i].latitude = utils.ConvertDMStoDD( options.positions[i].latitude);
+      }
       poses.push(
         ellipsoid.cartographicToCartesian(
           Cartographic.fromDegrees(options.positions[i].longitude, options.positions[i].latitude, options.positions[i].height || 0)
           )
         );
     }
-
+    //added by ciyi 20140401 start
+    //设置线宽
+    //var w = options.width
+    
     var w = options.width ? options.width : 1.0;
-
+    //added by ciyi 20140401 end
     var material = null;
     if(options.arrow === 'head'){
       material = Cesium.Material.fromType(Cesium.Material.PolylineArrowType, {

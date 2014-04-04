@@ -1,13 +1,10 @@
 define(function(){
-
   function showSubtitle(cesiumWidget, options){
-
     var position = options.position || {width: 300, height:200, x:100, y:50};
     var fontSize = options.fontSize || 12;
     var fontColor = options.fontColor || 'black';
     var backgroundColor = options.backgroundColor || 'white';
     var alignment = options.alignment || 'left';
-
     var style = [
       '.alert-script{position:absolute; padding:10px 25px 10px 10px;}',
       '.alert-script .close{display:block; width:20px; height:20px; display:block; background:url(assets/images/windowClose.png) no-repeat; background-size:20px auto; opacity:0.7;',

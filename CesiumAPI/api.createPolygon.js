@@ -1,5 +1,5 @@
-define(function(){
-  function createPolygon(cesiumWidget, options){
+define(['./api.utils.js'],function(utils) {
+  function createPolygon(cesiumWidget, options) {
     var scene = cesiumWidget.scene;
 
     var primitives = scene.primitives;
@@ -8,6 +8,10 @@ define(function(){
     var positions = options.positions;
     var cators = [];
     for(var i = 0; i < positions.length; i ++){
+      if(typeof positions[i].longitude == 'string'){
+      positions[i].longitude = utils.ConvertDMStoDD(positions[i].longitude);
+      positions[i].latitude = utils.ConvertDMStoDD( positions[i].latitude);
+      }
       cators.push(Cesium.Cartographic.fromDegrees(positions[i].longitude, positions[i].latitude));
     }
     var poses = ellipsoid.cartographicArrayToCartesianArray(cators);

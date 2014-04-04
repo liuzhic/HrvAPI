@@ -1,8 +1,14 @@
-define(function(){
+define(['./api.utils.js'],function(utils){
+
   function createEllipsoid(cesiumWidget, options){
     var scene = cesiumWidget.scene;
     var primitives = scene.primitives;
     var ellipsoid = cesiumWidget.centralBody.ellipsoid;
+
+     if(typeof options.center.longitude == 'string'){
+      options.center.longitude = utils.ConvertDMStoDD(options.center.longitude);
+      options.center.latitude = utils.ConvertDMStoDD(options.center.latitude);
+    }
 
     var radii = new Cesium.Cartesian3(options.semiMajorAxis, options.semiMinorAxis, options.extrudedHeight);
     var positionOnEllipsoid = ellipsoid.cartographicToCartesian(Cesium.Cartographic.fromDegrees(options.center.longitude, options.center.latitude, options.center.height));

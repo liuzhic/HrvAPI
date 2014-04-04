@@ -27,7 +27,6 @@ define(function(){
     });
     require(['CesiumAPI/api.idManager.js'], function(){
       var id = options.id || window.idManager.nextID();
-      console.log(id);
       window.idManager.addObject(id, model, scene.primitives);
     });
   };
