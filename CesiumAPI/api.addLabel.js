@@ -9,7 +9,7 @@ define(function(){
     var fontObj = options.font || {};
     var fontStr = (fontObj.height || 12) + 'px ' + (fontObj.name || 'Helvetica');
 
-    labels.add({
+    var label = labels.add({
       position: ellipsoid.cartographicToCartesian(Cesium.Cartographic.fromDegrees(options.position.longitude, options.position.latitude, options.position.height || 0)),
       text: options.text,
       font: fontStr,
@@ -22,10 +22,12 @@ define(function(){
 
     primitives.add(labels);
 
-    require(['/CesiumAPI/api.idManager.js'], function(){
+    require(['CesiumAPI/api.idManager.js'], function(){
       var id = options.id || window.idManager.nextID();
       window.idManager.addObject(id, labels, scene.primitives);
     });
+
+    return label;
   }
 
   return addLabel;

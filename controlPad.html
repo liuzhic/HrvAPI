@@ -36,11 +36,17 @@
     <button data-type="deleteObject">Delete Object(Please create polygon first)</button>
     <hr>
     <button data-type="showInfo" disabled>Show Info</button>
+    <button data-type="showSubtitle" disabled>Show Subtitle</button>
+    <button data-type="showPosition" disabled>Show Position</button>
+    <button data-type="hidePosition" disabled>Hide Position</button>
+    <hr>
+    <button data-type="loadCzml" disabled>Load Czml</button>
+    <button data-type="removeCzml" disabled>Remove Czml</button>
   </div>
   <script src="assets/scripts/jquery-2.1.0.min.js"></script>
   <script src="SocketServer/WebSocket.js"></script>
   <script>
-  WebSocketHelper.connect('ws://localhost:8000').on('open', function(e){
+  WebSocketHelper.connect('ws://'+window.location.hostname+':8000').on('open', function(e){
     $('#connectStatus').html('Connected').addClass('connected').removeClass('error');
     $('#operations button').removeAttr('disabled');
   }).on('close', function(e){
@@ -55,6 +61,9 @@
       case 'showObject':
       WebSocketHelper.sendMessage('{"name":"showObject", "args":{"id": "p1"}}');
       break;
+      case 'showSubtitle':
+      WebSocketHelper.sendMessage('{"name":"showSubtitle", "args":{"text":"Some  Text","position":{"width":200,"height":200,"x":100,"y":40},"fontSize":14, "fontColor": "blue", "backgroundColor": "rgba(255,0,0,0.3)", "alignment": "right"}}');
+      break;
       case 'flyToObject':
       WebSocketHelper.sendMessage('{"name":"flyToObject", "args":{"id": "someBillboard"}}');
       break;
@@ -65,7 +74,7 @@
       WebSocketHelper.sendMessage('{"name":"createPolygon", "args":{"id":"p1", "positions":[{"longitude":-115.0, "latitude": 37.0}, {"longitude":-115.0, "latitude": 32.0}, {"longitude":-107.0, "latitude": 33.0}],"height":1000,"extrudedHeight":200000.0,"color":"blue","outlineColor":"yellow"}}');
       break;
       case 'addBillboard':
-      WebSocketHelper.sendMessage('{"name":"addBillboard", "args":{"id": "someBillboard","position":{"longitude":-115.0, "latitude": 37.0, "height":100000},"url":"/assets/images/googleLogo.png","tips":"some billboard","scale":0.2}}');
+      WebSocketHelper.sendMessage('{"name":"addBillboard","args":{"id":"someBillboard","position":{"longitude":"-150.0","latitude":"37.0","height":100000},"url":"'+window.location.origin+'/static/assets/images/googleLogo.png","tips":"some billboard","scale":0.2}}');
       break;
       case 'createEllipsoid':
       WebSocketHelper.sendMessage('{"name":"createEllipsoid", "args":{"id": "id1", "center":{"longitude":-115.0, "latitude": 37.0, "height":810000},"semiMajorAxis": 900000, "semiMinorAxis": 610000, "extrudedHeight": 600000, "color": "green", "outlineColor": "yellow"}}');
@@ -100,6 +109,19 @@
       break;
       case 'createEllipse':
       WebSocketHelper.sendMessage('{"name":"createEllipse","args":{"center":{"longitude":90.0, "latitude":40.0},"semiMajorAxis":210000,"semiMinorAxis":100100,"height":10000,"extrudedHeight":200000,"color":"#ff0f0f"}}');
+      break;
+      case 'loadCzml':
+      WebSocketHelper.sendMessage('{"name":"loadCzml","args":[{"id":"07d2340e-09b9-4a25-8aca-6c09d2b6d833","url":"czml/simple.czml"},{"id":"a9c3a5f5-9e89-447c-91bf-94000f8794fb","url":"czml/LotsOfSensors.czml"}]}');
+      break;
+      case 'removeCzml':
+      WebSocketHelper.sendMessage('{"name":"removeCzml", "args":{"id":"07d2340e-09b9-4a25-8aca-6c09d2b6d833"}}');
+      break;
+      case 'showPosition':
+      WebSocketHelper.sendMessage('{"name":"showPosition", "args":{"show": true, "type": "degree"}}');
+      // type -> decimal
+      break;
+      case 'hidePosition':
+      WebSocketHelper.sendMessage('{"name":"showPosition", "args":{"show": false}}');
       break;
     }
   });
